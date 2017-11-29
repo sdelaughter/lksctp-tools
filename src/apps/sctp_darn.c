@@ -705,7 +705,7 @@ command_listen(char *argv0, int sk)
 			recvsk = sk;
 		}
 
-		error = recvmsg(recvsk, &inmessage, MSG_WAITALL);
+		error = recvmmsg(recvsk, &inmessage, MSG_WAITALL);
 		if (error < 0) {
 			if (nonblocking && (EAGAIN == errno)) {
 				error = 0;
@@ -1243,7 +1243,7 @@ command_poll(char *argv0)
 				temp_fd = poll_sks[i];
 			}
 			if (temp_set) {
-				error = recvmsg(temp_fd, &inmessage,
+				error = recvmmsg(temp_fd, &inmessage,
 					MSG_WAITALL);
 				if (error < 0) {
 					if ((EAGAIN == errno)) {
@@ -2318,9 +2318,9 @@ test_recv_assoc_change(int sk)
 	inmessage.msg_control = incmsg;
 	inmessage.msg_controllen = sizeof(incmsg);
 
-	error = recvmsg(sk, &inmessage, MSG_WAITALL);
+	error = recvmmsg(sk, &inmessage, MSG_WAITALL);
 	if (error < 0) {
-		printf("%s: recvmsg: %s\n", __FUNCTION__, strerror(errno));
+		printf("%s: recvmmsg: %s\n", __FUNCTION__, strerror(errno));
 		exit(1);
 	}
 
